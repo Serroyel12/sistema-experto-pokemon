@@ -119,7 +119,7 @@ def main():
     moves_db = get_moves_db()
     pokemon_db = get_pokemon_db()
 
-    st.header("1️⃣ Datos de los Pokémon")
+    st.header("1) Datos de los Pokémon")
 
     col1, col2 = st.columns(2)
 
@@ -139,16 +139,16 @@ def main():
         else:
             st.error("El Pokémon enemigo no se ha encontrado en la base. Algunas reglas pueden no activarse.")
 
-    st.header("2️⃣ Estado del combate")
+    st.header("2) Estado del combate")
 
     my_hp_pct = st.slider("Tu vida actual (%)", min_value=0, max_value=100, value=80, step=5)
     enemy_hp_pct = st.slider("Vida actual del enemigo (%)", min_value=0, max_value=100, value=60, step=5)
 
-    st.header("3️⃣ Movimientos de tu Pokémon")
+    st.header("3) Movimientos de tu Pokémon")
     st.caption("Usa los nombres en formato veekun. Ejemplos: **flamethrower**, **water-gun**, **vine-whip**, **thunderbolt**.")
     my_moves = build_moves(moves_db, my_types, enemy_types, chart)
 
-    st.header("4️⃣ Otros factores")
+    st.header("4) Otros factores")
     has_priority_move = st.checkbox("Tengo algún movimiento de prioridad (Quick Attack, ExtremeSpeed, etc.)")
     has_defensive_move = st.checkbox("Tengo un movimiento defensivo / de curación útil este turno")
 
@@ -161,7 +161,7 @@ def main():
     is_slower = (speed_choice == "Soy más lento")
 
     # Botón para lanzar el motor de inferencia
-    if st.button("🔍 Calcular recomendación"):
+    if st.button("Calcular recomendación"):
         # Ventaja de tipos aproximada
         my_advantage = has_type_advantage(my_types, enemy_types, chart)
         enemy_advantage = has_type_advantage(enemy_types, my_types, chart)
@@ -187,27 +187,27 @@ def main():
         recos = sorted(result.facts.get("recommendations", []),
                        key=lambda r: -r["priority"])
 
-        st.subheader("📋 Resumen de la situación")
+        st.subheader("Resumen de la situación")
         st.write(f"**Tu Pokémon:** {my_identifier}  – tipos: {my_types} – vida: {my_hp_pct}%")
         st.write(f"**Enemigo:** {enemy_identifier}  – tipos: {enemy_types} – vida: {enemy_hp_pct}%")
         st.write(f"Ventaja de tipos tuya: `{my_advantage}`  |  Ventaja del rival: `{enemy_advantage}`")
 
         best = result.facts.get("best_move")
         if best:
-            st.subheader("🥊 Mejor movimiento según el sistema")
+            st.subheader("Mejor movimiento según el sistema")
             st.write(
                 f"- **{best['name']}** (tipo `{best['type']}`, poder {best['power']}, "
                 f"efectividad x{best['eff']}, score={best['score']:.1f})"
             )
 
-        st.subheader("✅ Recomendaciones del sistema experto")
+        st.subheader("Recomendaciones del sistema experto")
         if not recos:
             st.info("No se ha generado ninguna recomendación (puede que falte información de tipos o movimientos).")
         else:
             for r in recos:
                 st.markdown(f"- **[{r['priority']}]** {r['text']}")
 
-        st.subheader("🧠 Explicación (reglas disparadas)")
+        st.subheader("Explicación (reglas disparadas)")
         if not result.trace:
             st.info("Ninguna regla se ha activado.")
         else:
