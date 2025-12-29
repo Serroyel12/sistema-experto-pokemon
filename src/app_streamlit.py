@@ -112,7 +112,7 @@ def build_moves(moves_db, my_types, enemy_types, chart):
 # ========================
 
 def main():
-    st.title("⚔️ Sistema Experto Pokémon – Asistente de Combate")
+    st.title(" Sistema Experto Pokémon – Asistente de Combate")
     st.write("Introduce la situación del combate y el sistema experto te recomendará la mejor acción.")
 
     chart = get_type_chart()
